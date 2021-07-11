@@ -9,7 +9,8 @@ class BottomNavStyle7 extends StatelessWidget {
   });
 
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
-      double? height, {context}) {
+      double? height,
+      {context}) {
     return this.navBarEssentials!.navBarHeight == 0
         ? SizedBox.shrink()
         : AnimatedContainer(
@@ -17,14 +18,15 @@ class BottomNavStyle7 extends StatelessWidget {
       width: isSelected ? MediaQuery
           .of(context)
           .size
-          .width / 2 : 50,
+          .width : 60,
       height: height! / 1.6,
       duration:
       this.navBarEssentials!.itemAnimationProperties?.duration ??
           Duration(milliseconds: 400),
       curve: this.navBarEssentials!.itemAnimationProperties?.curve ??
           Curves.ease,
-      padding: EdgeInsets.all(item.contentPadding),
+      // padding: EdgeInsets.all(item.contentPadding),
+      padding: EdgeInsets.all(10),
       decoration: isSelected
           ? BoxDecoration(
         color: isSelected
@@ -75,23 +77,37 @@ class BottomNavStyle7 extends StatelessWidget {
               child: Material(
                 type: MaterialType.transparency,
                 child: FittedBox(
-                    child: Text(
-                      item.title!,
-                      style: item.textStyle != null
-                          ? (item.textStyle!.apply(
-                          color: isSelected
-                              ? (item.activeColorSecondary ==
-                              null
-                              ? item.activeColorPrimary
-                              : item.activeColorSecondary)
-                              : item.inactiveColorPrimary))
-                          : TextStyle(
-                          color:
-                          (item.activeColorSecondary == null
-                              ? item.activeColorPrimary
-                              : item.activeColorSecondary),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        item.onIconRight?.call();
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            item.title!,
+                            style: item.textStyle != null
+                                ? (item.textStyle!.apply(
+                                color: isSelected
+                                    ? (item.activeColorSecondary ==
+                                    null
+                                    ? item
+                                    .activeColorPrimary
+                                    : item
+                                    .activeColorSecondary)
+                                    : item
+                                    .inactiveColorPrimary))
+                                : TextStyle(
+                                color: (item.activeColorSecondary ==
+                                    null
+                                    ? item.activeColorPrimary
+                                    : item
+                                    .activeColorSecondary),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.0),
+                          ),
+                          item.iconRight ?? SizedBox.shrink()
+                        ],
+                      ),
                     )),
               ),
             )
@@ -104,7 +120,6 @@ class BottomNavStyle7 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("${this.navBarEssentials!.navBarHeight}");
     return Container(
       width: double.infinity,
       height: this.navBarEssentials!.navBarHeight,
@@ -116,15 +131,14 @@ class BottomNavStyle7 extends StatelessWidget {
           // right: this.navBarEssentials!.padding?.right ??
           //     MediaQuery.of(context).size.width * 0.07,
           bottom: this.navBarEssentials!.padding?.bottom ??
-              this.navBarEssentials!.navBarHeight! * 0.15
-      ),
+              this.navBarEssentials!.navBarHeight! * 0.15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: this.navBarEssentials!.items!.map((item) {
           int index = this.navBarEssentials!.items!.indexOf(item);
           return Flexible(
-            flex: this.navBarEssentials!.selectedIndex == index ? 2 : 1,
+            flex: this.navBarEssentials!.selectedIndex == index ? 3 : 1,
             child: GestureDetector(
               onTap: () {
                 if (this.navBarEssentials!.items![index].onPressed != null) {
@@ -134,14 +148,11 @@ class BottomNavStyle7 extends StatelessWidget {
                   this.navBarEssentials!.onItemSelected!(index);
                 }
               },
-              child: Container(
-                color: Colors.transparent,
-                child: _buildItem(
-                  item,
-                  this.navBarEssentials!.selectedIndex == index,
-                  this.navBarEssentials!.navBarHeight,
-                  context: context,
-                ),
+              child: _buildItem(
+                item,
+                this.navBarEssentials!.selectedIndex == index,
+                this.navBarEssentials!.navBarHeight,
+                context: context,
               ),
             ),
           );

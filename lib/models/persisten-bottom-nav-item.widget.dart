@@ -58,6 +58,9 @@ class PersistentBottomNavBarItem {
   final Widget? iconRight;
   final Function? onIconRight;
 
+  final double? valuePaddingLeftRight;
+
+
   PersistentBottomNavBarItem({required this.icon,
     this.inactiveIcon,
     this.title,
@@ -73,7 +76,7 @@ class PersistentBottomNavBarItem {
     this.onSelectedTabPressWhenNoScreensPushed,
     this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
     this.onPressed
-    , this.iconRight, this.onIconRight}) {
+    , this.iconRight, this.onIconRight, this.valuePaddingLeftRight}) {
     assert(opacity >= 0 && opacity <= 1.0);
   }
 }
